@@ -15,7 +15,7 @@ jobs:
         project_name: "csa_gha_test"
         target_image: "ericallard/elasticsearch:x86"
         log_level: "DEBUG"
-        #export_format: "sarif"
+        export_format: "invalidValue"
         export_file_type: "json"
     - uses: actions/upload-artifact@v4
       with:
