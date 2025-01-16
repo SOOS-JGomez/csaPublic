@@ -1,0 +1,40 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Dev-SOOS-Security-Analysis@0
+  displayName: Security Analysis
+  #continueOnError: true # Prevents the build from failing in some situations. Defaults to false
+  inputs:
+    apiKey: $(apiKey)
+    clientId: $(clientId)
+    scanType: 'CSA'
+    baseUri: 'https://qa-api.soos.io/api/'
+    dockerImageTag: 'beta'
+    projectName: 'csaAzure_test' # The name of the project. Defaults to 'Build.Repository.Name'.
+    targetToScan: 'ericallard/elasticsearch:vulnerable' #CSA
+    exportFormat: "sarif"
+    exportFileType: "json"
+    logLevel: "DEBUG"
+    #otherOptions: '-o cyclonedx-xml'
+    #otherOptions: "-d"
+- task: CopyFiles@2
+  inputs:
+    Contents: |
+      $(Pipeline.Workspace)/s/*.sarif.json
+    TargetFolder: $(Pipeline.Workspace)/reports
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Scan Results"
+  condition: succeededOrFailed()
+  inputs:
+    PathtoPublish: $(Pipeline.Workspace)/reports
+    ArtifactName: "reports"
+    publishLocation: "Container"
