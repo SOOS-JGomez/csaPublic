@@ -8,6 +8,7 @@ jobs:
     - name: Run SOOS CSA
       uses: soos-io/soos-csa-github-action@c1c5845125fcf51101d616778e44e5af67ffeca2
       with:
+        image_tag: 'beta'
         client_id: ${{ secrets.SOOS_CLIENT_ID }}
         api_key: ${{ secrets.SOOS_API_KEY }}
         api_url: "https://qa-api.soos.io/api/"
