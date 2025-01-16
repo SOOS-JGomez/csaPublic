@@ -15,9 +15,9 @@ jobs:
         project_name: "csa_gha_test"
         target_image: "ericallard/elasticsearch:x86"
         log_level: "DEBUG"
-        export_format: "soosissues"
-        export_file_type: "html"
-        output_directory: "./another"
+        export_format: "sarif"
+        export_file_type: "json"
+        output_format: "another"
     - uses: actions/upload-artifact@v4
       with:
         name: 'reports'
